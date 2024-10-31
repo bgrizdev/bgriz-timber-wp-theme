@@ -1,0 +1,447 @@
+@import "animation/animation.scss";
+
+// Breakpoints 
+
+@mixin respond($breakpoint) {
+    @if $breakpoint == phone {
+        @media (max-width: 600px) { @content }; //600px
+    }
+    @if $breakpoint == tab-port {
+        @media (max-width: 900px) { @content }; //900px
+    }
+    @if $breakpoint == tab-land {
+        @media (max-width: 1200px) { @content }; //1200px
+    }
+    @if $breakpoint == big-d {
+        @media (min-width: 1800px) { @content }; //1800px
+    }
+}
+
+// mixins 
+
+@mixin button-styles {
+    padding: 0.5rem 1rem;
+    margin: 0.5rem;
+    border: none;
+    border-radius: 0.25rem;
+}
+
+// Colors 
+
+$white: #fff;
+$dark: #000;
+$dark-blue: #6093BF;
+$med-dark-blue: #72CEF2;
+$med-blue: #7aa5bf;
+$light-blue: #CEE8F2;
+$grey: #f2f2f2;
+
+$transparent-black: rgba(0,0,0,0.75);
+
+// Fonts 
+// Font families added in html-header.twig
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Lobster', cursive;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+}
+
+$base-font-size: 16px;
+
+$heading-font: 'Lobster', cursive;
+$body-font: 'Roboto', sans-serif;
+
+$h1-font-size: 2.5rem;
+$h2-font-size: 2rem;
+$h3-font-size: 1.75rem;
+$h4-font-size: 1.5rem;
+$h5-font-size: 1.25rem;
+$h6-font-size: 1rem;
+
+$body-font-size: 1rem;
+
+h1 {
+  font-size: $h1-font-size;
+  font-family: $heading-font;
+}
+
+h2 {
+  font-size: $h2-font-size;
+  font-family: $heading-font;
+}
+
+h3 {
+  font-size: $h3-font-size;
+  font-family: $heading-font;
+}
+
+h4 {
+  font-size: $h4-font-size;
+  font-family: $heading-font;
+}
+
+h5 {
+  font-size: $h5-font-size;
+  font-family: $heading-font;
+}
+
+h6 {
+  font-size: $h6-font-size;
+  font-family: $heading-font;
+}
+
+.highlight-txt {
+    font-size: $h5-font-size;
+    font-family: $heading-font;
+}
+
+body {
+  font-size: $body-font-size;
+  font-family: $body-font;
+}
+
+// buttons 
+
+button {
+    @include button-styles;
+} 
+
+.bg-dark {
+    background-color: $dark;
+    color: $white;
+}
+
+.bg-medium {
+    background-color: $dark-blue;
+    color: $white;
+}
+
+.bg-light {
+    background-color: $med-blue;
+    color: $white;
+}
+
+.bg-white {
+    background-color: $white;
+    color: $dark;
+}
+
+
+// Block Backgrounds
+
+.block-bg-dark {
+    background-color: $dark;
+    color: $white;
+}
+
+.block-bg-dark-blue {
+    background-color: $dark-blue;
+    color: $white;
+}
+
+.block-bg-med-dark-blue {
+    background-color: $med-dark-blue;
+    color: $white;
+}
+
+.block-bg-med-blue {
+    background-color: $med-dark-blue;
+    color: $white;
+}
+
+.block-bg-light-blue {
+    background-color: $light-blue;
+    color: $dark;
+}
+
+
+// Navigation 
+
+.sticky {
+    position: fixed; 
+    top: 0;
+    z-index: 999;
+    width: 100vw;
+}
+
+.not-sticky {
+    position: fixed; 
+    top: -200px;
+    z-index: 999;
+    width: 100vw;
+}
+
+.header {
+
+    z-index: 99999;
+    transition: all .5s;
+
+    .logo-text {
+        font-size: $h3-font-size;
+        font-family: $heading-font;
+    }
+
+    .featured-item {
+        background: $dark-blue;
+    }
+
+    .main-menu-closed {
+        top: -100%;
+        opacity: 0;
+    }
+
+
+    .main-menu-open {
+        top: 100%;
+        opacity: 1;
+    }
+
+    .main-menu {
+
+        transition: all .5s;
+
+        @media (max-width: 768px) { 
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background-color: #f2f2f2;
+        }
+
+        > li {
+
+            .menu-children {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                background-color: white;
+                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+                z-index: 1000;
+                width: 100%;
+                opacity: 0;
+                transform: translateY(-10px);
+                transition: opacity 0.3s ease, transform 0.3s ease;
+
+                > * {
+                    padding: 10px;
+                    white-space: nowrap; // Prevent line breaks
+                }
+            }
+
+            &:hover {
+                .menu-children {
+                    display: block;
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+        }
+    }
+}
+
+/* custom styles for contact button sliding in and out have to manually control with JS */
+#contactButton {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    background-color: $dark-blue;
+    color: $white;
+    padding: 10px 20px;
+    transition: transform 0.3s ease-in-out; 
+    transform: translateX(150%); 
+    z-index: 999999;
+}
+
+#contactOverlay {
+    z-index: 99999999;
+}
+
+// Scroll up content effect
+
+.scroll-content {
+    position: absolute;
+    top: 0;
+    z-index: 99;
+    width: 100vw;
+    margin-top: 100vh;
+}
+
+
+// Hero Banner Block
+
+.banner-overlay {
+    z-index: 9;
+    top: 0;
+    position: fixed;
+    height: 100vh;
+    width: 100%;
+}
+
+.bg-color-change {
+    background: linear-gradient(270deg, #6093BF, #72CEF2, #7aa5bf, #CEE8F2, #f2f2f2);
+    background-size: 1000% 1000%;
+    -webkit-animation: bgChange 30s ease infinite;
+    -moz-animation: bgChange 30s ease infinite;
+    animation: bgChange 30s ease infinite;
+}
+
+
+// Two Thirds Img CTA Block
+
+.two-thirds-img-cta {
+    height: 100vh;
+    z-index: 99;
+    position: relative;
+}
+
+// Spinning Logo BG Cols Block 
+
+.spinning-logo-bg-cols {
+    z-index: 99;
+    position: relative;
+    overflow: hidden;
+    min-height: 100vh;
+    background-color: $white;
+
+    .column {
+        z-index: 99;
+
+        .list-items {
+            position: relative;
+            .p-2 {
+              &[data-tooltip] {
+                position: relative;
+                cursor: pointer;
+                z-index: 9999;
+          
+                &:hover::before {
+                    content: attr(data-tooltip);
+                    position: absolute;
+                    background: rgba(0, 0, 0, 0.75);
+                    color: #fff;
+                    padding: 5px 10px;
+                    border-radius: 5px;
+                    bottom: 100%; // Position above the element
+                    left: 50%;
+                    transform: translateX(-50%);
+                    width: 250px;
+                    z-index: 9999;
+                    opacity: 0;
+                    transition: opacity 0.2s;
+                    margin-bottom: 5px; // Space between element and tooltip
+                }
+          
+                &:hover::before {
+                  opacity: 1;
+                }
+              }
+            }
+          }
+    }
+
+    #circle {
+        animation-timing-function: linear;
+        transform-origin: center;
+        animation: rotate 120s infinite;
+    }
+
+    .bg-svg {
+        position: absolute;
+        width: 65%;
+        top: 0;
+        right: -10%;
+        opacity: 0.15;
+        @include respond(phone){
+            width: 165%;
+            top: 25%;
+            right: 5%;
+        }
+    }
+}
+
+// Post Dislay Sticky Img Block 
+
+.post-display-sticky-img {
+    position: relative;
+    z-index: 99;
+    min-height: 100vh;
+
+    .sticky-img {
+        margin: 0 auto;
+        position: sticky;
+        top: 150px;
+    }
+
+}
+
+// Post Display Grid 
+
+.post-display-grid {
+    position: relative;
+    z-index: 99;
+    min-height: 100vh;
+    background-color: $white;
+
+    .post-grid-item {
+        position: relative;
+        overflow: hidden;
+
+        .overlay {
+            position: absolute;
+            bottom: 0;
+            width: 100%; // Set width to 100% of parent
+            height: 100%; // Set height to 100% of parent
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            background-color: $transparent-black;
+            color: white;
+        }
+
+        &:hover .overlay {
+            //transform: translateY(0);
+            opacity: 1;
+        }
+    }
+}
+
+
+// Slick Slider With Content 
+
+.slick-slider-with-content {
+    position: relative;
+    z-index: 99;
+    min-height: 100vh;
+    .slick-slider {
+        .slide-outer {
+            padding: 15px;
+            .slide-img {
+                border: solid black 5px;
+            }
+        }
+    }
+}
+
+footer {
+    position: relative;
+    background-color: $dark;
+    z-index: 999;
+}
+
+
+// General override for gutenberg previews
+// issues with widths on blocks display improperly on the backend 
+
+.block-editor__container {
+    .banner-overlay {
+        height: auto !important;;
+        width: auto !important;
+    }
+}

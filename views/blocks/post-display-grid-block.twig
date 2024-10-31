@@ -1,0 +1,58 @@
+{#
+/**
+ * Block Name: Post display grid
+ *
+ * This is the template that displays the Post Display Grid
+ */
+#}
+
+{% if is_preview %}
+
+{% endif %}
+
+<div id="post-display-grid-{{ block.id }}" class="post-display-grid relative p-10">
+
+<h3 class="text-center">{{ fields.title  }}</h3>
+
+<div class="flex flex-wrap max-w-screen-xl mx-auto">
+    <div class="w-full p-4">
+        {% set post_type = fields.post_type_selection %}
+        {% set posts = get_custom_posts(post_type, rand) %}
+        {% if posts|length > 0 %}
+            <div id="post-grid-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                {% for post in posts %}
+                    <div class="post-grid-item p-4">
+                        <div class="post-grid-item-inner shadow-lg rounded-lg">
+                            <h4 class="text-lg font-semibold text-center p-4">{{ post.post_title }}</h4>
+                            <div class="p-4 post-grid-img">
+                                <img src="{{ post.thumbnail_url ? post.thumbnail_url : '/wp-content/uploads/2024/03/2021-logo.png' }}" alt="{% if post.alt %}{{ post.alt }}{% else %}Web development projects Ben Grzybowski has built or contributed to{% endif %}" class="max-w-full h-auto">
+                            </div>
+                        </div>
+                        <div class="overlay p-4">
+                            <h4>{{ post.post_title }}</h4>
+                            {% if post.post_excerpt is defined %}
+                                <p class="text-center">{{ post.post_excerpt }}</p>
+                            {% endif %}
+                            <a href="{{post.post_link}}"><button class="bg-light">Learn More</button></a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No posts found.</p>
+        {% endif %}
+    </div>
+</div>
+    <div class="flex justify-center items-center">
+        <button id="load-more-posts" class="bg-dark">
+            Load More
+        </button>
+    </div>
+</div>
+
+
+
+
+<style type="text/css">
+
+</style>
