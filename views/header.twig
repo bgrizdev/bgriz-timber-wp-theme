@@ -1,30 +1,35 @@
-<header class="header bg-white shadow-md nav-container relative flex w-screen">
+<header class="header bg-white shadow-md nav-container flex w-screen">
+  <div class="header-inner flex w-screen">
     {% block header %}
                 <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
                     <!-- <img src="{{ nav_logo['url'] }}" class="h-24 p-2" alt="{{ nav_logo['alt'] }}" /> -->
                     <span class="logo-text p-2">Ben G. | Web Dev</span>
                 </a>
-                <button data-collapse-toggle="mega-menu-full-image" type="button" id="mobile-menu-toggle">
-                    <span class="sr-only">Open main menu</span>
-                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
-                    </svg>
-                </button>
                 <div class="main-menu-container mt-4 md:mt-0 flex ml-auto">
-                    <ul class="main-menu flex flex-col md:flex-row md:space-x-8 rtl:space-x-reverse">
-                        {% for item in menu.items %}
-                            <li class="menu-item flex items-center">
-                                <a href="{{ item.link }}" class="block px-4 py-2">{{ item.title }}</a>
-                                {% if(item.children) %}
-                                <div class="menu-children absolute left-0 top-full hidden bg-white shadow-lg z-10 transition-opacity duration-300 opacity-0 transform -translate-y-2">
-                                    {% include 'partial/nav-sub-items.twig' with {'children': item.children} %}
-                                </div>
-                                {% endif %}
-                            </li>
-                        {% endfor %}
-                    </ul>
+                  <ul class="main-menu flex flex-col md:flex-row md:space-x-8 rtl:space-x-reverse">
+                  {% for item in menu.items %}
+                      {% if item.children %}
+                          {% set children_data = [] %}
+
+                          {% for child in item.children %}
+                              {% set child_data = {
+                                  title: child.title,
+                                  url: child.url,
+                                  thumbnail: function('get_the_post_thumbnail_url', child.object_id) ?: ''
+                              } %}
+                              {% set children_data = children_data | merge([child_data]) %}
+                          {% endfor %}
+                      {% endif %}
+
+                      <li class="menu-item flex items-center" {% if children_data is defined %} data-children='{{ children_data | json_encode | e('html_attr') }}'{% endif %}>
+                          <a href="{{ item.link }}" class="block px-4 py-2">{{ item.title }}</a>
+                      </li>
+                  {% endfor %}
+                  </ul>
                 </div>
     {% endblock %}
+  </div>
+  {% include 'partial/nav-sub-items.twig' %}
 </header>
 
 <button id="contactButton" class="">Get in touch!</button>
