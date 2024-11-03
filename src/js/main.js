@@ -24,6 +24,34 @@ const fadeLogo = () => {
     }
 };
 
+    // Function to add/remove toggle functionality based on screen width
+    const setupMenuToggle = () => {
+      console.log('setupMenuToggle called');
+      const menuToggle = document.getElementById('menu-toggle');
+      const mediaQuery = window.matchMedia('(max-width: 768px)');
+  
+      if (mediaQuery.matches) {
+        // Remove any existing listener to prevent multiple bindings
+        menuToggle.removeEventListener('click', toggleMenu);
+        menuToggle.addEventListener('click', toggleMenu);
+      } else {
+        // Remove the click event listener when not in mobile view
+        menuToggle.removeEventListener('click', toggleMenu);
+      }
+    };
+    // Toggle function for main menu
+    const toggleMenu = () => {
+      const mainMenuContainer = document.querySelector('.main-menu-container');
+      console.log('toggle');
+      if (mainMenuContainer.classList.contains('main-menu-container-open')) {
+        mainMenuContainer.classList.remove('main-menu-container-open');
+          // so that the toggle menu function is called whenever the menu toggle
+          // is clicked.
+      } else {
+        mainMenuContainer.classList.add('main-menu-container-open');
+      }
+    };
+
 function menuFunctions() {
   const menuItems = document.querySelectorAll('.main-menu .menu-item');
   const menuChildrenContainer = document.getElementById('menu-children-container');
@@ -31,68 +59,101 @@ function menuFunctions() {
   const menuList = menuChildrenContent.querySelector('ul');
   const featuredItem = menuChildrenContent.querySelector('.featured-item');
   const featuredTitle = featuredItem.querySelector('p');
-  const featuredImage = featuredItem.querySelector('img');
+  const featuredImage = featuredItem.querySelector('.featured-item-img');
   const featuredLink = featuredItem.querySelector('a');
 
   let isInMenuChildren = false;
 
   menuItems.forEach((item) => {
+
       const childrenData = item.getAttribute('data-children');
       const parsedChildren = childrenData ? JSON.parse(childrenData) : null;
 
-      item.addEventListener('mouseenter', () => {
-          // Clear existing menu items
+      if(parsedChildren !== null) {
+        item.addEventListener('mouseenter', () => {
+  
+            // Clear existing menu items
+            menuList.innerHTML = '';
+  
+            if(parsedChildren[1].title && parsedChildren[1].url && parsedChildren[1].thumbnail) {
+              featuredTitle.textContent = parsedChildren[1].title;
+              featuredItem.href = parsedChildren[1].url;
+              featuredImage.src = parsedChildren[1].thumbnail || themeData.themeUrl +'/src/img/2021-logo.png'; // Default or placeholder image if thumbnail is missing
+              featuredImage.alt = parsedChildren[1].title;
+            }
+  
+            // Populate the menu list with new sub-items if they exist
+            if (parsedChildren && parsedChildren.length) {
+  
+                parsedChildren.forEach((child) => {
+                    const listItem = document.createElement('li');
+                    listItem.className = 'child-menu-item';
+                    
+                    const link = document.createElement('a');
+                    if(child.url !== '#') {
+                      link.href = child.url;
+                      link.className = 'block px-4 py-2';
+                      link.textContent = child.title;
+                      listItem.appendChild(link);
+                    } else {
+                      link.href = '#';
+                      link.className = 'block px-4 py-2 font-bold underline';
+                      link.textContent = child.title;
+                      listItem.appendChild(link);
+                    }
+  
+                    // Add event listener to update the featured item on hover
+                    listItem.addEventListener('mouseenter', () => {
+                        // Update featured item with specific data for this child
+                        featuredTitle.textContent = child.title;
+                        featuredItem.href = child.url;
+                        featuredImage.src = child.thumbnail || themeData.themeUrl +'/src/img/2021-logo.png'; // Default or placeholder image if thumbnail is missing
+                        featuredImage.alt = child.title;
+                    });
+  
+                    menuList.appendChild(listItem);
+                });
+                menuChildrenContainer.classList.add('menu-children-open');
+            } else {
+                // Hide menu-children container if no children are present
+                menuChildrenContainer.classList.remove('menu-children-open');
+                menuList.innerHTML = '';
+                featuredTitle.textContent = '';
+                featuredItem.href = '';
+                featuredImage.src = '';
+                featuredImage.alt = '';
+            }
+        });
+  
+        menuChildrenContainer.addEventListener('mouseenter', () => {
+          isInMenuChildren = true;
+          menuChildrenContainer.classList.add('menu-children-open');
+        });
+      
+        menuChildrenContainer.addEventListener('mouseleave', () => {
+          isInMenuChildren = false;
+          menuChildrenContainer.classList.remove('menu-children-open');
           menuList.innerHTML = '';
-
-          // Populate the menu list with new sub-items if they exist
-          if (parsedChildren && parsedChildren.length) {
-              parsedChildren.forEach((child) => {
-                  const listItem = document.createElement('li');
-                  listItem.className = 'child-menu-item';
-                  
-                  const link = document.createElement('a');
-                  link.href = child.url;
-                  link.className = 'block px-4 py-2';
-                  link.textContent = child.title;
-                  listItem.appendChild(link);
-
-                  // Add event listener to update the featured item on hover
-                  listItem.addEventListener('mouseenter', () => {
-                      // Update featured item with specific data for this child
-                      featuredTitle.textContent = child.title;
-                      featuredLink.href = child.url;
-                      featuredImage.src = child.thumbnail || ''; // Default or placeholder image if thumbnail is missing
-                      featuredImage.alt = child.title;
-                  });
-
-                  menuList.appendChild(listItem);
-              });
-              menuChildrenContainer.classList.add('menu-children-open');
-          } else {
-              // Hide menu-children container if no children are present
+          featuredTitle.textContent = '';
+          featuredItem.href = '';
+          featuredImage.src = '';
+          featuredImage.alt = '';
+        });
+  
+        document.querySelector('.main-menu').addEventListener('mouseleave', () => {
+          setTimeout(() => {
+            if (!isInMenuChildren) {
               menuChildrenContainer.classList.remove('menu-children-open');
               menuList.innerHTML = '';
-          }
-      });
+              featuredTitle.textContent = '';
+              featuredItem.href = '';
+              featuredImage.src = '';
+              featuredImage.alt = '';
+            }
+          }, 100); // Small delay to account for quick transitions
+        });
+      }
 
-      menuChildrenContainer.addEventListener('mouseenter', () => {
-        isInMenuChildren = true;
-        menuChildrenContainer.classList.add('menu-children-open');
-      });
-    
-      menuChildrenContainer.addEventListener('mouseleave', () => {
-        isInMenuChildren = false;
-        menuChildrenContainer.classList.remove('menu-children-open');
-        menuList.innerHTML = '';
-      });
-
-      document.querySelector('.main-menu').addEventListener('mouseleave', () => {
-        setTimeout(() => {
-          if (!isInMenuChildren) {
-            menuChildrenContainer.classList.remove('menu-children-open');
-          }
-        }, 100); // Small delay to account for quick transitions
-      });
   });
 
   // Hide menu-children container when mouse leaves the main menu
@@ -104,6 +165,7 @@ function menuFunctions() {
 document.addEventListener("DOMContentLoaded", function() {
 
     menuFunctions();
+    setupMenuToggle();
 
     window.addEventListener('scroll', fadeLogo);
 

@@ -178,6 +178,11 @@ button {
     z-index: 9999; // Lower this slightly if needed
     transition: all 0.5s;
     position: relative;
+    background-color: $white;
+
+    .mobile-menu {
+        display: none;
+    }
 
     .header-inner {
         position: relative;
@@ -206,23 +211,75 @@ button {
         background: $dark-blue;
     }
 
-    .main-menu-closed {
-        top: -100%;
-        opacity: 0;
-    }
 
-    .main-menu-open {
-        top: 100%;
-        opacity: 1;
-    }
+    @media (max-width: 768px) {
 
-    .main-menu {
-        @media (max-width: 768px) { 
+        .main-menu-container {
             position: absolute;
-            top: 100%;
-            left: 0;
             width: 100%;
-            background-color: #f2f2f2;
+            top: -500%;
+            background-color: white;    
+
+            ul li {
+                width: 100%;
+            }
+        }
+
+        .main-menu-container-open {
+            top: 100%;
+        }
+
+        .mobile-menu {
+            display: block;
+            label {
+                display: block;
+                cursor: pointer;
+                width: 115px;
+                height: 115px;
+            }
+    
+            path {
+                fill: none;
+                stroke: black;
+                stroke-width: 3;
+                stroke-linecap: round;
+                stroke-linejoin: round;
+                --length: 24;
+                --offset: -38;
+                stroke-dasharray: var(--length) var(--total-length);
+                stroke-dashoffset: var(--offset);
+                transition: all 0.8s cubic-bezier(.645, .045, .355, 1);
+            }
+    
+            input {
+                display: none;
+            }
+    
+            .line--1,
+            .line--3 {
+                --total-length: 111.22813415527344;
+                --offset: -50.22813415527344;
+            }
+    
+            .line--2 {
+                --total-length: 99;
+            }
+    
+            input:checked + svg {
+                path {
+                    transform: translateX(30px);
+                }
+    
+                .line--1,
+                .line--3 {
+                    --offset: -16.9705627485;
+                }
+    
+                .line--2 {
+                    --offset: -20;
+                    --length: 0;
+                }
+            }
         }
     }
 }
