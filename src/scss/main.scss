@@ -160,20 +160,6 @@ button {
 
 // Navigation 
 
-.sticky {
-    position: fixed; 
-    top: 0;
-    z-index: 999;
-    width: 100vw;
-}
-
-.not-sticky {
-    position: fixed; 
-    top: -200px;
-    z-index: 999;
-    width: 100vw;
-}
-
 .header {
     z-index: 9999; // Lower this slightly if needed
     transition: all 0.5s;
@@ -202,6 +188,10 @@ button {
         top: 100%;
     }
 
+    .mobile-sub-menu {
+        display: none;
+    }
+
     .logo-text {
         font-size: $h3-font-size;
         font-family: $heading-font;
@@ -214,11 +204,17 @@ button {
 
     @media (max-width: 768px) {
 
+        .mobile-sub-menu {
+            display: block;
+        }
+
         .main-menu-container {
             position: absolute;
             width: 100%;
-            top: -500%;
+            top: -100vh;
             background-color: white;    
+            transition: all .5s;
+            height: 100vh;
 
             ul li {
                 width: 100%;
@@ -227,6 +223,10 @@ button {
 
         .main-menu-container-open {
             top: 100%;
+        }
+
+        .menu-children-open {
+            z-index: 9999;
         }
 
         .mobile-menu {
@@ -282,6 +282,20 @@ button {
             }
         }
     }
+}
+
+.sticky {
+    position: fixed; 
+    top: 0;
+    z-index: 999;
+    width: 100vw;
+}
+
+.not-sticky {
+    position: fixed; 
+    top: -200px;
+    z-index: 999;
+    width: 100vw;
 }
 
 

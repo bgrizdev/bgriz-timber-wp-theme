@@ -23,34 +23,26 @@ const fadeLogo = () => {
         //}
     }
 };
-
+// prevent toggle from double event handler
+let isToggleSetup = false;
     // Function to add/remove toggle functionality based on screen width
-    const setupMenuToggle = () => {
-      console.log('setupMenuToggle called');
+    function setupMenuToggle() {
       const menuToggle = document.getElementById('menu-toggle');
-      const mediaQuery = window.matchMedia('(max-width: 768px)');
-  
-      if (mediaQuery.matches) {
-        // Remove any existing listener to prevent multiple bindings
-        menuToggle.removeEventListener('click', toggleMenu);
-        menuToggle.addEventListener('click', toggleMenu);
-      } else {
-        // Remove the click event listener when not in mobile view
-        menuToggle.removeEventListener('click', toggleMenu);
-      }
-    };
-    // Toggle function for main menu
-    const toggleMenu = () => {
-      const mainMenuContainer = document.querySelector('.main-menu-container');
-      console.log('toggle');
-      if (mainMenuContainer.classList.contains('main-menu-container-open')) {
-        mainMenuContainer.classList.remove('main-menu-container-open');
-          // so that the toggle menu function is called whenever the menu toggle
-          // is clicked.
-      } else {
-        mainMenuContainer.classList.add('main-menu-container-open');
-      }
-    };
+      const checkbox = menuToggle.querySelector('input[type="checkbox"]');
+    
+      // Add an event listener only to the outer container, not the checkbox
+      menuToggle.addEventListener('click', (e) => {
+        // Prevent the checkbox from propagating the click
+        if (e.target === checkbox) {
+          e.stopPropagation();
+          return;
+        }
+    
+        console.log('toggled');
+        const mainMenuContainer = document.querySelector('.main-menu-container');
+        mainMenuContainer.classList.toggle('main-menu-container-open');
+      });
+    }
 
 function menuFunctions() {
   const menuItems = document.querySelectorAll('.main-menu .menu-item');
@@ -60,7 +52,6 @@ function menuFunctions() {
   const featuredItem = menuChildrenContent.querySelector('.featured-item');
   const featuredTitle = featuredItem.querySelector('p');
   const featuredImage = featuredItem.querySelector('.featured-item-img');
-  const featuredLink = featuredItem.querySelector('a');
 
   let isInMenuChildren = false;
 
