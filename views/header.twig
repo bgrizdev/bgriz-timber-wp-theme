@@ -1,46 +1,6 @@
 <header class="header bg-white shadow-md nav-container flex w-screen">
-  <div class="header-inner justify-between flex w-screen">
-    {% block header %}
-                <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
-                    <!-- <img src="{{ nav_logo['url'] }}" class="h-24 p-2" alt="{{ nav_logo['alt'] }}" /> -->
-                    <span class="logo-text p-2">Ben G. | Web Dev</span>
-                </a>
-                <div class="main-menu-container md:mt-0 flex ml-auto">
-                  <ul class="main-menu flex flex-col md:flex-row md:space-x-8 rtl:space-x-reverse">
-                  {% for item in menu.items %}
-                      {% if item.children %}
-                          {% set children_data = [] %}
-
-                          {% for child in item.children %}
-                              {% set child_data = {
-                                  title: child.title,
-                                  url: child.url,
-                                  thumbnail: function('get_the_post_thumbnail_url', child.object_id) ?: ''
-                              } %}
-                              {% set children_data = children_data | merge([child_data]) %}
-                          {% endfor %}
-                      {% endif %}
-
-                      <li class="menu-item flex items-center" {% if children_data is defined %} data-children='{{ children_data | json_encode | e('html_attr') }}'{% endif %}>
-                          <a href="{{ item.link }}" class="block px-4 py-2">{{ item.title }}</a>
-                      </li>
-                  {% endfor %}
-                  </ul>
-
-                </div>
-                <div class="mobile-menu menu cross menu--2" id="menu-toggle">
-                  <label>
-                    <input type="checkbox">
-                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                      <path class="line--1" d="M0 70l28-28c2-2 2-2 7-2h64" />
-                      <path class="line--2" d="M0 50h99" />
-                      <path class="line--3" d="M0 30l28 28c2 2 2 2 7 2h64" />
-                    </svg>
-                  </label>
-                </div>
-    {% endblock %}
-  </div>
-  {% include 'partial/nav-sub-items.twig' %}
+    {% include 'partial/nav-mobile.twig' %}
+    {% include 'partial/nav-desktop.twig' %}
 </header>
 
 <button id="contactButton" class="">Get in touch!</button>

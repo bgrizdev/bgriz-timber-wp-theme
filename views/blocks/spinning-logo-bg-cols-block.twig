@@ -9,7 +9,7 @@
 
 {% if is_preview %}
 
-<div id="spinning-logo-bg-cols{{ block.id }}" class="spinning-logo-bg-cols flex justify-center items-center spinning-logo-bg-cols-block{{ block.id }} p-10">
+<div id="spinning-logo-bg-cols{{ block.id }}" class="spinning-logo-bg-cols flex justify-center items-center spinning-logo-bg-cols-block{{ block.id }} md:p-10">
       <div class="bg-svg">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 459.76 469.04">
           <defs>
@@ -130,7 +130,7 @@
 {% else %}
 
 
-<div id="spinning-logo-bg-cols{{ block.id }}" class="spinning-logo-bg-cols flex justify-center items-center spinning-logo-bg-cols-block{{ block.id }} h-screen w-screen p-10">
+<div id="spinning-logo-bg-cols{{ block.id }}" class="spinning-logo-bg-cols flex justify-center items-center spinning-logo-bg-cols-block{{ block.id }} md:p-10">
       <div class="bg-svg">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 459.76 469.04">
           <defs>
@@ -224,11 +224,11 @@
       </div>
 <h2 p-5>{{ fields.title }}</h2>
 
-<div class="column-container sm:max-w-[900px] grid grid-cols-3 gap-4 p-10">
+<div class="column-container sm:max-w-[900px] grid sm:grid-cols-3 gap-4 md:p-10">
 
     {% for column in fields.columns %}
 
-    <div class="column bg-white p-2 m-2 rounded-lg border border-gray-200 md:min-w-[250px]">
+    <div class="column bg-white p-2 m-2 rounded-lg border border-gray-200">
             <h4 class="text-center">{{ column.title }}</h3>
 
             <div class="list-items p-5">

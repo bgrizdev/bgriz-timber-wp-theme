@@ -103,6 +103,10 @@ body {
   font-family: $body-font;
 }
 
+.no-scroll {
+    overflow: hidden;
+}
+
 // buttons 
 
 button {
@@ -182,6 +186,7 @@ button {
         left: 0;
         z-index: 99; // Adjust if needed to layer below the main content
         transition: all .5s;
+        background-color: $dark-blue
       }
     
       .menu-children-open {
@@ -201,32 +206,181 @@ button {
         background: $dark-blue;
     }
 
+    .mobile {
+        display: none;
+    }
 
+    #menu-children-container {
+        ul {
+            li {
+                display: inline-block; 
+                width: auto; 
+                position: relative;
+                overflow: hidden;
+    
+                &:not(:first-child) {
+                    a {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        position: relative;
+                        z-index: 10;
+                        color: inherit;
+                        text-decoration: none;
+                        transition: color 0.3s ease-in-out;
+                    }
+                    
+                    &::before {
+                        content: '';
+                        position: absolute;
+                        top: 0;
+                        right: 0;
+                        width: 100%;
+                        height: 100%;
+                        background-color: white;
+                        transform: translateX(100%);
+                        transition: transform 0.3s ease-in-out;
+                        z-index: 0;
+                    }
+                    
+                    &:hover::before {
+                        transform: translateX(0);
+                    }
+                    
+                    &:hover a {
+                        color: black;
+                    }
+                }
+    
+                &:first-child {
+                    a {
+                        font-size: 1.2rem;
+                        font-weight: bold;
+                        text-decoration: underline;
+                        color: white;
+                        cursor: default;
+                        font-family: $heading-font;
+                    }
+    
+                    &::before {
+                        content: none;
+                    }
+    
+                    &:hover a {
+                        color: black;
+                    }
+                }
+            }
+        }
+    }
+    
+    
+    .main-menu-container {
+        height: 100%;
+      
+        .main-menu {
+          height: 100%;
+          @media (max-width: 768px) {
+            height: auto;
+            background-color: $dark;
+          }
+      
+          .menu-item {
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            color: $dark;
+            @media (max-width: 768px) {
+                color: $white;
+            }
+            transition: color 0.2s ease-in-out;
+      
+            &::before {
+              content: '';
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              background: $dark-blue;
+              transform: translateY(-100%);
+              transition: transform 0.2s ease-in-out;
+              z-index: -1; // Ensures it’s behind the text content
+            }
+      
+            &.background-enter {
+              color: white; // Change text color to white during animation
+      
+              &::before {
+                transform: translateY(0); // Background slides in from top to bottom
+              }
+            }
+      
+            &.background-exit::before {
+              transform: translateY(100%); // Background slides out from bottom to top
+            }
+          }
+        }
+      }
+      
+      
     @media (max-width: 768px) {
 
-        .mobile-sub-menu {
-            display: block;
+        // MOBILE NAV STYLES - CLEAN THIS UP
+        
+        .desktop {
+            display: none;
+        }
+
+        .mobile {
+            display: flex;
         }
 
         .main-menu-container {
-            position: absolute;
+            position: fixed;
             width: 100%;
             top: -100vh;
-            background-color: white;    
+            background-color: $dark-blue; 
             transition: all .5s;
             height: 100vh;
-
+            z-index: -1;
+            padding-top: 115px;
             ul li {
+                width: 100%;
+            }
+            .main-menu {
                 width: 100%;
             }
         }
 
         .main-menu-container-open {
-            top: 100%;
+            top: 0;
         }
 
         .menu-children-open {
             z-index: 9999;
+            width: 100%;
+        }
+
+        .mobile-menu-children {
+            width: 100%;
+            img {
+                max-width: 75px;
+            }
+        }
+
+        #mobile-menu-children-content {
+            width: 100%;
+
+            
+            .child-menu-item {
+                
+                a {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+            }
         }
 
         .mobile-menu {
@@ -234,8 +388,8 @@ button {
             label {
                 display: block;
                 cursor: pointer;
-                width: 115px;
-                height: 115px;
+                width: 75px;
+                height: 75px;
             }
     
             path {
@@ -298,8 +452,6 @@ button {
     width: 100vw;
 }
 
-
-/* custom styles for contact button sliding in and out have to manually control with JS */
 #contactButton {
     position: fixed;
     bottom: 1rem;
@@ -349,7 +501,7 @@ button {
 // Two Thirds Img CTA Block
 
 .two-thirds-img-cta {
-    height: 100vh;
+    min-height: 100vh;
     z-index: 99;
     position: relative;
 }
@@ -362,6 +514,12 @@ button {
     overflow: hidden;
     min-height: 100vh;
     background-color: $white;
+
+    @media (max-width: 768px) { 
+        .column-container {
+            width: 80%;
+        }
+    }
 
     .column {
         z-index: 99;
