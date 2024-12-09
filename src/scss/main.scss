@@ -107,6 +107,21 @@ body {
     overflow: hidden;
 }
 
+// Default GB helper classes
+
+.gb-block-fix {
+    position: relative;
+    z-index: 999;
+}
+
+.gb-bg-white {
+    background: white;
+}
+
+.gb-bg-red {
+    background: #ff301c;
+}
+
 // buttons 
 
 button {
@@ -234,7 +249,7 @@ button {
                         content: '';
                         position: absolute;
                         top: 0;
-                        right: 0;
+                        right: -1%;
                         width: 100%;
                         height: 100%;
                         background-color: white;
@@ -265,10 +280,6 @@ button {
                     &::before {
                         content: none;
                     }
-    
-                    &:hover a {
-                        color: black;
-                    }
                 }
             }
         }
@@ -280,14 +291,21 @@ button {
       
         .main-menu {
           height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 1.5rem;
+
           @media (max-width: 768px) {
-            height: auto;
+            height: 35%;
             background-color: $dark;
+            font-weight: bold;
           }
       
           .menu-item {
             position: relative;
             overflow: hidden;
+            height: 100%;
             cursor: pointer;
             color: $dark;
             @media (max-width: 768px) {
@@ -334,6 +352,18 @@ button {
 
         .mobile {
             display: flex;
+
+            .mobile-nav-logo {
+                width: 86%;
+                background: $white;
+
+            }
+
+            #menu-toggle {
+                width: 14%;
+                background: $white;
+            }
+
         }
 
         .main-menu-container {
@@ -344,7 +374,7 @@ button {
             transition: all .5s;
             height: 100vh;
             z-index: -1;
-            padding-top: 115px;
+            padding-top: 75px;
             ul li {
                 width: 100%;
             }
@@ -364,6 +394,7 @@ button {
 
         .mobile-menu-children {
             width: 100%;
+            height: 65%;
             img {
                 max-width: 75px;
             }
@@ -466,6 +497,67 @@ button {
 
 #contactOverlay {
     z-index: 99999999;
+
+    .overlay-header {
+        margin-bottom: 15px;
+    }
+
+    .close-container{
+        position: relative;
+        width: 50px;
+        height: 50px;
+        cursor: pointer;
+        right: -25px;
+      }
+      
+      .leftright{
+        height: 4px;
+        width: 25px;
+        position: absolute;
+        margin-top: 24px;
+        background-color: black;
+        border-radius: 2px;
+        transform: rotate(45deg);
+        transition: all .3s ease-in;
+      }
+      
+      .rightleft{
+        height: 4px;
+        width: 25px;
+        position: absolute;
+        margin-top: 24px;
+        background-color: black;
+        border-radius: 2px;
+        transform: rotate(-45deg);
+        transition: all .3s ease-in;
+      }
+      
+      label{
+        color: black;
+        font-family: Helvetica, Arial, sans-serif; 
+        font-size: .6em;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        transition: all .3s ease-in;
+        opacity: 0;
+      }
+      .close{
+        margin: 38px 0 0 -7px;
+        position: absolute;
+      }
+      
+      .close-container:hover .leftright{
+        transform: rotate(-45deg);
+        background-color: black;
+      }
+      .close-container:hover .rightleft{
+        transform: rotate(45deg);
+        background-color: black;
+      }
+      .close-container:hover label{
+        opacity: 1;
+      }
+
 }
 
 // Scroll up content effect
@@ -647,6 +739,14 @@ footer {
     position: relative;
     background-color: $dark;
     z-index: 999;
+
+    .footer-logo {
+        display: block;
+        margin: 0 auto;
+        width: 100%;
+        max-width: 150px;
+    }
+
 }
 
 

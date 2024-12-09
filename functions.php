@@ -52,6 +52,7 @@ function get_custom_posts($post_type, $paged = 1) {
 add_filter('get_twig', 'add_custom_twig_functions');
 function add_custom_twig_functions($twig) {
   $twig->addFunction(new \Twig\TwigFunction('get_custom_posts', 'get_custom_posts'));
+  $twig->addFunction(new \Twig\TwigFunction('do_shortcode', 'do_shortcode'));
   $twig->addFunction(new \Twig\TwigFunction('var_dump', function($var){
     var_dump($var);
   }));
@@ -248,9 +249,9 @@ add_action( 'init', 'custom_post_type_projects', 0 );
 function add_to_context($context) {
 
   $context['nav_logo'] = get_field('navigation_settings_nav_logo', 'option');
+  $context['footer_logo'] = get_field('footer_options_footer_logo', 'option');
   
   return $context;
 
 }
 add_filter('timber/context', 'add_to_context');
-

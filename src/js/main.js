@@ -64,6 +64,7 @@ let isToggleSetup = false;
     
 
 function menuFunctions() {
+
   const menuItems = document.querySelectorAll('#desktop-nav-main-menu .menu-item');
   const menuChildrenContainer = document.getElementById('menu-children-container');
   const menuChildrenContent = document.getElementById('menu-children-content');
@@ -188,38 +189,39 @@ function mobileMenuFunction() {
   const mobileMenuList = mobileMenuChildrenContent.querySelector('ul');
 
   const populateMenu = (parsedChildren) => {
-    mobileMenuList.innerHTML = ''; // Clear existing menu items
+    mobileMenuList.innerHTML = ''; 
 
     if (parsedChildren && parsedChildren.length) {
-      parsedChildren.forEach((child) => {
+      parsedChildren.slice(0, 4).forEach((child) => {
         const mobileListItem = document.createElement('li');
         mobileListItem.className = 'child-menu-item';
-
+    
         const link = document.createElement('a');
         if (child.url !== '#') {
           link.href = child.url;
           link.className = 'block px-4 py-2';
           link.textContent = child.title;
-
+    
           const img = document.createElement('img');
           img.src = child.thumbnail;
           img.alt = child.title;
           link.appendChild(img);
-
+    
           mobileListItem.appendChild(link);
         } else {
           link.href = '#';
           link.className = 'block px-4 py-2 font-bold underline';
           link.textContent = child.title;
-
+    
           mobileListItem.appendChild(link);
         }
-
+    
         mobileMenuList.appendChild(mobileListItem);
       });
-
+    
       mobileMenuChildrenContainer.classList.add('menu-children-open');
     }
+    
   };
 
   // Initialize the menu with the first item containing `data-children`
