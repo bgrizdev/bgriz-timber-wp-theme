@@ -75,7 +75,7 @@ function ajax_load_more_posts() {
                     <img src="'. esc_html($featured_image_url) .'" alt="" class="max-w-full h-auto">
                 </div>
             </div>
-            <div class="overlay p-4">
+            <div class="overlay p-4 rounded-lg">
                 <h4>'. esc_html($post['post_title']) .'</h4>
                 <p class="text-center">'. $post['post_excerpt'] .'</p>
                 <a href="'. esc_html($post['post_link']) .'"><button class="bg-light">Learn More</button></a>

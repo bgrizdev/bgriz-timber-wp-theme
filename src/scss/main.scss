@@ -49,6 +49,10 @@ body {
     font-family: 'Roboto', sans-serif;
 }
 
+.lobster {
+    font-family: 'Lobster', cursive;
+}
+
 $base-font-size: 16px;
 
 $heading-font: 'Lobster', cursive;
@@ -196,7 +200,7 @@ button {
 
     .menu-children {
         position: absolute;
-        top: -500%; // Place it directly below the header
+        top: -1000%; // Place it directly below the header
         width: 100%;
         left: 0;
         z-index: 99; // Adjust if needed to layer below the main content
@@ -686,6 +690,12 @@ button {
 
 // Post Display Grid 
 
+// helper class for slow spinning svg on load more
+
+.spin-slow {
+    animation: spin 2s linear infinite; 
+  }
+
 .post-display-grid {
     position: relative;
     z-index: 99;
@@ -694,7 +704,9 @@ button {
 
     .post-grid-item {
         position: relative;
-        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
         .overlay {
             position: absolute;
@@ -714,6 +726,12 @@ button {
         &:hover .overlay {
             //transform: translateY(0);
             opacity: 1;
+        }
+    }
+
+    #spinner {
+        svg {
+            width: 100px;
         }
     }
 }
