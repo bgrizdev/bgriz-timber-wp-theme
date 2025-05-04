@@ -24,7 +24,7 @@ function get_custom_posts($post_type, $paged = 1, $category = null) {
   error_log('post_type: ' . $post_type);
   error_log('category: ' . print_r($category, true));
 
-  $posts_per_page = 6;
+  $posts_per_page = 3;
   $args = array(
       'post_type' => $post_type,
       'posts_per_page' => $posts_per_page,
