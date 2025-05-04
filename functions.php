@@ -19,13 +19,27 @@ new StarterSite();
 // Add function to query posts in twig files 
 
 // Function to fetch posts
-function get_custom_posts($post_type, $paged = 1) {
+function get_custom_posts($post_type, $paged = 1, $category = null) {
+
+  error_log('post_type: ' . $post_type);
+  error_log('category: ' . print_r($category, true));
+
   $posts_per_page = 6;
   $args = array(
       'post_type' => $post_type,
       'posts_per_page' => $posts_per_page,
-      'paged' => $paged,
+      'paged' => $paged
   );
+
+  if (!empty($category)) {
+    $args['tax_query'] = array(
+        array(
+            'taxonomy' => 'category',
+            'field'    => 'slug', // or 'term_id' if passing an ID
+            'terms'    => $category,
+        ),
+    );
+  }
 
   $query = new WP_Query($args);
   $posts_with_thumbnails = array();
@@ -34,13 +48,26 @@ function get_custom_posts($post_type, $paged = 1) {
       setup_postdata($post);
       $thumbnail_url = get_the_post_thumbnail_url($post->ID);
 
+      $categories = get_the_terms($post->ID, 'category');
+      $category_data = array();
+
+      if ($categories && !is_wp_error($categories)) {
+          foreach ($categories as $category) {
+              $category_data[] = array(
+                  'name' => $category->name,
+                  'slug' => $category->slug,
+              );
+          }
+      }
+
       // Collecting all necessary post data
       $posts_with_thumbnails[] = array(
           'ID' => $post->ID,
           'post_title' => get_the_title($post),
           'post_excerpt' => get_the_excerpt($post),
           'thumbnail_url' => $thumbnail_url ? $thumbnail_url : '',
-          'post_link' => get_permalink($post->ID)
+          'post_link' => get_permalink($post->ID),
+          'categories' => $category_data
       );
   }
 
@@ -51,12 +78,25 @@ function get_custom_posts($post_type, $paged = 1) {
 // Add custom function to Twig
 add_filter('get_twig', 'add_custom_twig_functions');
 function add_custom_twig_functions($twig) {
+  $twig->addFunction(new \Twig\TwigFunction('get_project_categories', 'get_project_categories'));
   $twig->addFunction(new \Twig\TwigFunction('get_custom_posts', 'get_custom_posts'));
   $twig->addFunction(new \Twig\TwigFunction('do_shortcode', 'do_shortcode'));
   $twig->addFunction(new \Twig\TwigFunction('var_dump', function($var){
     var_dump($var);
   }));
   return $twig;
+}
+
+function get_project_categories() {
+  $args = array(
+      'taxonomy'   => 'category', 
+      'hide_empty' => true, 
+      'exclude'    => get_cat_ID('Uncategorized'), 
+  );
+
+  $categories = get_terms($args);
+
+  return $categories;
 }
 
 function ajax_load_more_posts() {
@@ -68,7 +108,7 @@ function ajax_load_more_posts() {
     foreach ($posts as $post) {
           $featured_image_url = get_the_post_thumbnail_url($post['ID']);
           echo '
-          <div class="post-grid-item p-4">
+          <div class="post-grid-item p-4 ' . esc_attr($post['categories'][0]['slug']) . '">
             <div class="post-grid-item-inner shadow-lg rounded-lg mx-4 my-4">
                 <h4 class="text-lg font-semibold text-center p-4">'. esc_html($post['post_title']) .'</h4>
                 <div class="p-4 post-grid-img">
@@ -99,14 +139,13 @@ include('register-blocks.php');
  */
 
 function enqueue_styles() {
-    wp_enqueue_style( 'tailwindcss', get_template_directory_uri() . '/dist/css/style.css', array(), '1.0.0', 'all' );
-    wp_enqueue_style( 'sass-css', get_template_directory_uri() . '/dist/css/sass-comp.css', array(), '1.0.0', 'all' );
+    wp_enqueue_style( 'compiled-css', get_template_directory_uri() . '/dist/css/main.css', array(), '1.0.0', 'all' );
     wp_enqueue_style( 'slick-css', get_template_directory_uri() . '/static/slick/slick.css', array() );
     wp_enqueue_style( 'slick-slider-theme-css', get_template_directory_uri() . '/static/slick/slick-theme.css', array() );
     
     wp_enqueue_script( 'jquery' ); 
     wp_enqueue_script( 'slick-js', get_template_directory_uri() . '/static/slick/slick.min.js', array('jquery'), '1.8.1', true );
-    wp_enqueue_script(  'main-js' , get_template_directory_uri() . '/src/js/main.js', array('jquery'), '1.8.1', true );
+    wp_enqueue_script(  'main-js' , get_template_directory_uri() . '/dist/js/main.js', array('jquery'), '1.8.1', true );
     wp_localize_script('main-js', 'themeData', array(
       'themeUrl' => get_template_directory_uri()
     ));
@@ -118,12 +157,12 @@ add_action( 'enqueue_block_editor_assets', 'enqueue_styles' ); // Hook for edito
 
 // Load more scripts 
 
-function enqueue_load_more_scripts() {
-  wp_enqueue_script('load-more', get_template_directory_uri() . '/static/js/load-more.js', array('jquery'), null, true);
-  wp_localize_script('load-more', 'ajaxurl', admin_url('admin-ajax.php'));
-}
+//function enqueue_load_more_scripts() {
+//  wp_enqueue_script('load-more', get_template_directory_uri() . '/static/js/load-more.js', array('jquery'), null, true);
+//  wp_localize_script('load-more', 'ajaxurl', admin_url('admin-ajax.php'));
+//}
 
-add_action('wp_enqueue_scripts', 'enqueue_load_more_scripts');
+//add_action('wp_enqueue_scripts', 'enqueue_load_more_scripts');
 
 // register navs 
 
@@ -255,3 +294,4 @@ function add_to_context($context) {
 
 }
 add_filter('timber/context', 'add_to_context');
+

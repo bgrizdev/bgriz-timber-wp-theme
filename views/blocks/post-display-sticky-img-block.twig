@@ -10,15 +10,15 @@
 
 {% endif %}
 
-<div id="post-display-sticky-img-{{ block.id }}" class="post-display-sticky-img relative p-6 md:p-10">
+<div id="post-display-sticky-img-{{ block.id }}" class="post-display-sticky-img relative pt-10 pb-10 px-6 md:p-10">
 
 <div class="flex flex-wrap max-w-screen-xl mx-auto">
-    <div class="w-full lg:w-2/3 p-4 bg-white">
+    <div class="w-full lg:w-2/3 p-4 bg-white rounded-lg">
         {% set post_type = fields.post_type_selection %}
         {% set posts = get_custom_posts(post_type) %}
         {% if posts|length > 0 %}
             {% for post in posts %}
-                <div class="mt-0 md:mt-12 mb-0 md:mb-12 ml-8 mr-8 flex flex-col md:flex-row">
+                <div class="mt-0 md:mt-12 mb-0 md:mb-12 mx-2 md:mx-8 flex flex-col md:flex-row shadow-md rounded-lg">
                     <div class="content-contain m-4 md:w-3/4">
                         <div style="padding: 8px;">
                             <h2>{{ post.post_title }}</h2>

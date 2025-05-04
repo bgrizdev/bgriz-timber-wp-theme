@@ -62,6 +62,15 @@ function register_acf_blocks()
             'category' => 'formatting',
             'icon' => 'dashicons-desktop',
             'keywords' => ['spinning logo cols','spinning section', 'logo bg'],
+            'enqueue_assets' => function() {
+                wp_enqueue_script(
+                    'post-display-grid-script',
+                    get_template_directory_uri() . '/dist/js/post-display-block.js',
+                    filemtime(get_template_directory() . '/dist/js/post-display-block.js'), 
+                    true 
+                );
+                wp_localize_script('post-display-grid-script', 'ajaxurl', admin_url('admin-ajax.php'));
+            }
         ]);
 
         // Carousel Block
@@ -73,6 +82,69 @@ function register_acf_blocks()
             'category' => 'formatting',
             'icon' => 'dashicons-desktop',
             'keywords' => ['slider','slick', 'carousel'],
+        ]);
+
+        // Nest GB Sticky Img 
+        acf_register_block_type([
+           'name'            => 'nested-gb-sticky-img',
+           'title'           => __('Nested GB Sticky Image'),
+           'description'     => __('A block that supports nested Gutenberg blocks with a sticky image.'),
+           'render_callback' => 'render_nested_gb_sticky_img_callback',
+            'category'        => 'layout',
+            'icon'            => 'format-image',
+            'keywords' => ['nested gb','sticky image', 'nested'],
+            'supports'        => [
+                'align'       => false,
+                'jsx'         => true,
+                'mode'        => 'edit',
+                'multiple'    => true,
+                'innerBlocks' => true,
+            ],
+        ]);
+
+        // Code Editor Block
+        acf_register_block_type(array(
+            'name'              => 'code-editor',
+            'title'             => __('Code Editor'),
+            'description'       => __('A block to display code with syntax highlighting.'),
+            'render_callback'   => 'render_code_editor_block_callback',
+            'category'          => 'formatting',
+            'icon'              => 'editor-code',
+            'keywords'          => array('code', 'editor', 'highlight'),
+            'enqueue_assets'    => function () {
+                // Enqueue Prism.js for syntax highlighting
+                wp_enqueue_style('prism-css', get_template_directory_uri() . '/dist/css/code-editor-block.css', array(), '1.0.0', 'all');
+                wp_enqueue_script('prism-js', get_template_directory_uri() . '/dist/js/code-editor-block.js', [], null, true);
+            },
+        ));
+
+        // Code Editor Block
+        acf_register_block_type(array(
+            'name'              => 'code-editor',
+            'title'             => __('Code Editor'),
+            'description'       => __('A block to display code with syntax highlighting.'),
+            'render_callback'   => 'render_code_editor_block_callback',
+            'category'          => 'formatting',
+            'icon'              => 'editor-code',
+            'keywords'          => array('code', 'editor', 'highlight'),
+            'enqueue_assets'    => function () {
+                wp_enqueue_style('prism-css', get_template_directory_uri() . '/dist/css/code-editor-block.css', array(), '1.0.0', 'all');
+                wp_enqueue_script('prism-js', get_template_directory_uri() . '/dist/js/code-editor-block.js', [], null, true);
+            },
+        ));
+
+        // Related Posts Block
+        acf_register_block([
+            'name' => 'related-posts',
+            'title' => __('Related Posts'),
+            'description' => __('Displays related posts'),
+            'render_callback' => 'render_related_posts_block_callback',
+            'category' => 'formatting',
+            'icon' => 'dashicons-desktop',
+            'keywords' => ['related posts','related posts block'],
+            'enqueue_assets'    => function () {
+                wp_enqueue_script('related-posts-js', get_template_directory_uri() . '/dist/js/related-posts-block.js', [], null, true);
+            },
         ]);
 }
 
@@ -161,14 +233,54 @@ function post_display_grid_render_callback($block, $content = '', $is_preview = 
 function slick_slider_with_content_render_callback($block, $content = '', $is_preview = false)
 {
     $context = Timber::context([
-        // Store block values.
         'block' => $block,
-        // Store field values.
         'fields' => get_fields(),
-        // Store $is_preview value.
         'is_preview' => $is_preview,
     ]);
 
     // Render the block.
     Timber::render('blocks/slick-slider-with-content-block.twig', $context);
+}
+
+function render_nested_gb_sticky_img_callback($block, $content = '', $is_preview = false, $post_id = 0) {
+    $fields = get_fields();
+
+    $context = Timber::context();
+    $context['fields'] = $fields;
+    $context['block'] = $block;
+
+    $context['block']['inner_blocks'] = render_block_core_innerblocks($block);
+
+    Timber::render('blocks/nested-gb-sticky-img.twig', $context);
+}
+
+function render_code_editor_block_callback($block, $content = '', $is_preview = false, $post_id = 0) {
+    $fields = get_fields();
+
+    $context = Timber::context();
+    $context['fields'] = $fields; 
+    $context['block'] = $block; 
+    $context['is_preview'] = $is_preview; 
+
+    Timber::render('blocks/code-editor-block.twig', $context);
+}
+
+function render_related_posts_block_callback($block, $content = '', $is_preview = false, $post_id = 0) {
+    $fields = get_fields();
+
+    $context = Timber::context();
+    $context['fields'] = $fields; 
+    $context['block'] = $block; 
+    $context['is_preview'] = $is_preview; 
+
+    Timber::render('blocks/related-posts-block.twig', $context);
+}
+
+
+
+// Helper function to render InnerBlocks content
+function render_block_core_innerblocks($block) {
+    ob_start();
+    echo '<InnerBlocks />';
+    return ob_get_clean();
 }

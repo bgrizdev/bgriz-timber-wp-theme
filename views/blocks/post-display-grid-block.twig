@@ -14,6 +14,13 @@
 
 <h3 class="text-center">{{ fields.title  }}</h3>
 
+<div id="filter-buttons" class="max-w-screen-xl mx-auto grid grid-cols-2 md:flex md:flex-row justify-center gap-2 md:space-x-4 mb-4 mt-4 rounded-lg">
+    <button class="filter-button active w-full md:w-auto" data-filter="*">Show All</button>
+    {% for category in get_project_categories() %}
+        <button class="filter-button w-full md:w-auto" data-filter=".{{ category.slug }}">{{ category.name }}</button>
+    {% endfor %}
+</div>
+
 <div class="flex flex-wrap max-w-screen-xl mx-auto">
     <div class="w-full p-4">
         {% set post_type = fields.post_type_selection %}
@@ -21,7 +28,7 @@
         {% if posts|length > 0 %}
             <div id="post-grid-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                 {% for post in posts %}
-                    <div class="post-grid-item p-4">
+                    <div class="post-grid-item p-4 {% for category in post.categories %}{{ category.slug }} {% endfor %}">
                         <div class="post-grid-item-inner shadow-lg rounded-lg">
                             <h4 class="text-lg font-semibold text-center p-4">{{ post.post_title }}</h4>
                             <div class="p-4 post-grid-img">

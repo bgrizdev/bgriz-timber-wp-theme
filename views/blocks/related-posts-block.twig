@@ -1,0 +1,67 @@
+{#
+/**
+ * Block Name: Related Posts Block
+ *
+ */
+#}
+
+<div id="related-posts-{{ block.id }}" class="relative related-posts-block min-w-screen p-6 flex align-center" style="
+		        {{ fields.background_color ? 'background-color: ' ~ fields.background_color ~ ';' : '' }}
+		        {{ fields.font_color ? ' color: ' ~ fields.font_color ~ ';' : '' }}">
+    {% if fields.spinning_logo_background == 'yes' %}
+        {% include 'shared/logo-svg.twig' with { svg_fill_color: fields.logo_color ?? '#ffffff' } %}
+    {% endif %}
+	<div class="flex flex-col md:flex-row gap-8 max-w-full sm:max-w-[900px] mx-auto">
+		{# Navigation - Above on mobile, Left on desktop #}
+		<div class="w-full md:w-1/4 text-center self-center">
+			<h2 class="text-2xl font-bold mb-8">{{ fields.block_title }}</h2>
+			<div class="custom-arrows flex flex-row justify-evenly gap-4 mb-8 md:mb-0">
+				{# Previous arrow #}
+				<button class="prev-arrow bg-gray-100 hover:bg-gray-200 rounded-full p-4 transition-colors w-12 h-12 flex items-center justify-center">
+					<svg class="w-6 h-6 rotate-90" fill="none" stroke="black" viewbox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7 7 7-7"/>
+					</svg>
+				</button>
+
+				{# Next arrow #}
+				<button class="next-arrow bg-gray-100 hover:bg-gray-200 rounded-full p-4 transition-colors w-12 h-12 flex items-center justify-center">
+					<svg class="w-6 h-6 rotate-90" fill="none" stroke="black" viewbox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7-7-7 7"/>
+					</svg>
+				</button>
+			</div>
+		</div>
+
+		{# Slides - Below on mobile, Right on desktop #}
+		<div class="w-full md:w-3/4 self-center">
+			<section class="splide" aria-label="Related Posts Slider">
+				<div class="splide__track">
+					<ul class="splide__list">
+						{% set post_type = fields.post_type_selection %}
+						{% set category = fields.filter_category %}
+						{% set posts = get_custom_posts(post_type, 1, category) %}
+						{% if posts|length > 0 %}
+							{% for post in posts %}
+								<li class="splide__slide flex flex-col h-auto">
+									<div class="h-full flex flex-col p-2">
+										<div class="slide-content text-center flex-grow flex flex-col p-4 bg-white rounded-lg border border-gray-200 shadow min-h-[300px]">
+											<h2 class="text-lg font-semibold">{{ post.post_title }}</h2>
+											<p class="my-auto text-sm">{{ post.post_excerpt }}</p>
+											<div class="mt-auto">
+												<a class="mx-auto" href="{{post.post_link}}">
+													<button class="bg-medium">View Details</button>
+												</a>
+											</div>
+										</div>
+									</div>
+								</li>
+							{% endfor %}
+						{% else %}
+							<p>No posts found.</p>
+						{% endif %}
+					</ul>
+				</div>
+			</section>
+		</div>
+	</div>
+</div>

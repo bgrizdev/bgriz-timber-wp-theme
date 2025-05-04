@@ -1,3 +1,5 @@
+import '../scss/main.scss';
+
 const fadeLogo = () => {
     let pos = window.scrollY;
     let hero = document.getElementById('hero').getBoundingClientRect().height;
@@ -100,6 +102,7 @@ function menuFunctions() {
   
             // Populate the menu list with new sub-items if they exist
             if (parsedChildren && parsedChildren.length) {
+
   
               parsedChildren.forEach((child) => {
                 const listItem = document.createElement('li');

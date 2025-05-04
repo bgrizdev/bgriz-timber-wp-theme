@@ -1,0 +1,17 @@
+<div id="nested-gb-sticky-img-{{ block.id }}" class="nested-gb-sticky-img relative p-6 md:p-10">
+    <div class="flex flex-wrap max-w-screen-xl mx-auto">
+        <div class="w-full {% if fields.sticky_image %}lg:w-2/3{% endif %} p-4 bg-white-transparent rounded-lg">
+            {{ block.inner_blocks|raw }}
+        </div>
+
+        {% if fields.sticky_image %}
+            <div class="w-full lg:w-1/3 mt-4 p-4">
+                <img 
+                    class="sticky-img" 
+                    src="{{ fields.sticky_image.url }}" 
+                    alt="{{ fields.sticky_image.alt | default('Custom') }}"
+                />
+            </div>
+        {% endif %}
+    </div>
+</div>

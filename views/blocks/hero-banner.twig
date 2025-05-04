@@ -22,9 +22,13 @@
      id="hero" 
      style="{{ fields.background_color is defined ? 'background-color: ' ~ fields.background_color ~ ';' : '' }}">
     <section id="hero-banner-{{ block.id }}" class="hero-banner wrapper h-screen w-screen bg-cover flex justify-center items-center bg-no-repeat" style="background-image: url('{{ fields.hero_banner_bg_image['url'] }}');">
+    {% if fields.spinning_logo_background == 'yes' %}
+        {% include 'shared/logo-svg.twig' with { svg_fill_color: fields.spinning_logo_svg_color ?? '#ffffff' } %}
+    {% endif %}
     <div class="logo-container">
         <img id="banner-logo" src="{{ fields.hero_banner_logo_image['url'] }}" alt="{% if fields.hero_banner_logo_image['alt'] %}{{ fields.block_image['alt'] }}{% else %}Ben Grzybowski Web Development and Design Portland Oregon Logo{% endif %}">
     </div>
+
     </section>
 </div>
 

@@ -1,10 +1,14 @@
 module.exports = {
   content: [
-    "./views/**/*.twig",
+    './views/**/*.twig', // Twig templates
+    './src/**/*.js',     // JavaScript files
+    './src/**/*.scss',   // SCSS files
+  ],
+  safelist: [
+    'min-h-screen'
   ],
   theme: {
     extend: {},
   },
-  plugins: [],
-  css: './static/tailwind.css', // Output path for compiled CSS
+  plugins: []
 };

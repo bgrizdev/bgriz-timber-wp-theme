@@ -1,4 +1,9 @@
-@import "animation/animation.scss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "utilities/animation.scss"; 
+@import '@splidejs/splide/css/core';
 
 // Breakpoints 
 
@@ -43,6 +48,16 @@ $transparent-black: rgba(0,0,0,0.75);
 
 h1, h2, h3, h4, h5, h6 {
     font-family: 'Lobster', cursive;
+}
+
+.wp-block {
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+html {
+    scroll-behavior: smooth;
 }
 
 body {
@@ -149,6 +164,11 @@ button {
 
 .bg-white {
     background-color: $white;
+    color: $dark;
+}
+
+.bg-white-transparent {
+    background-color: rgba(255, 255, 255, 0.8);
     color: $dark;
 }
 
@@ -327,7 +347,7 @@ button {
               background: $dark-blue;
               transform: translateY(-100%);
               transition: transform 0.2s ease-in-out;
-              z-index: -1; // Ensures it’s behind the text content
+              z-index: -1; // Ensures it's behind the text content
             }
       
             &.background-enter {
@@ -577,6 +597,29 @@ button {
 
 // Hero Banner Block
 
+.hero-banner {
+
+
+    #circle {
+        animation-timing-function: linear;
+        transform-origin: center;
+        animation: rotate 120s infinite;
+    }
+
+    .bg-svg {
+        position: absolute;
+        width: 65%;
+        top: 10%;
+        right: -10%;
+        opacity: 0.15;
+        @include respond(phone){
+            width: 165%;
+            top: 25%;
+            right: 5%;
+        }
+    }
+}
+
 .banner-overlay {
     z-index: 9;
     top: 0;
@@ -597,7 +640,6 @@ button {
 // Two Thirds Img CTA Block
 
 .two-thirds-img-cta {
-    min-height: 100vh;
     z-index: 99;
     position: relative;
 }
@@ -702,6 +744,34 @@ button {
     min-height: 100vh;
     background-color: $white;
 
+    #filter-buttons {
+        @media (min-width: 768px) {
+            position: sticky;
+            top: 0px;
+            z-index: 9999;
+        }
+        background-color: $white;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+
+        .filter-button {
+            border: 2px solid black;
+            border-radius: 0.25rem;
+            transition: all 0.3s ease-in-out;
+
+            &:hover {
+                background-color: $dark;
+                color: white;
+                border: 2px solid $dark;
+            }
+        }
+
+        .filter-button.active {
+            background-color: $dark-blue;
+            color: white;
+            border: 2px solid $dark-blue;
+        }
+    }
+
     .post-grid-item {
         position: relative;
         display: flex;
@@ -753,6 +823,34 @@ button {
     }
 }
 
+// Nested GB Sticky Img Block 
+
+.nested-gb-sticky-img {
+
+    p {
+        max-width: 900px;
+        margin: 15px auto;
+    }
+
+    &:not(.block-editor-page .nested-gb-sticky-img) {
+        z-index: 9999;
+    }
+
+    .wp-block-list {
+        width: 900px;
+        margin: 0 auto;
+        padding-left: 30px;
+        list-style: disc;
+    }
+
+
+    .sticky-img {
+        margin: 0 auto;
+        position: sticky;
+        top: 150px;
+    }
+}
+
 footer {
     position: relative;
     background-color: $dark;
@@ -763,6 +861,32 @@ footer {
         margin: 0 auto;
         width: 100%;
         max-width: 150px;
+    }
+
+}
+
+.related-posts-block {
+    z-index: 99;
+    overflow: hidden;
+
+
+    #circle {
+        animation-timing-function: linear;
+        transform-origin: center;
+        animation: rotate 120s infinite;
+    }
+
+    .bg-svg {
+        position: absolute;
+        width: 65%;
+        top: 0;
+        right: -10%;
+        opacity: 0.15;
+        @include respond(phone){
+            width: 165%;
+            top: 25%;
+            right: 5%;
+        }
     }
 
 }
