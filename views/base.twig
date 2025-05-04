@@ -16,7 +16,7 @@
 	{% endif %}
 		{% include 'header.twig' %}
 	</div>
-		<section id="content" role="main" class="content-wrapper scroll-content">
+		<section id="content" role="main" class="content-wrapper {{ is_404 ? 'no-scroll-content' : 'scroll-content' }}">
 			{% if title %}<h1>{{title}}</h1>{% endif %}
 			<div class="wrapper">
 				{% block content %}

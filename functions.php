@@ -77,6 +77,7 @@ function get_custom_posts($post_type, $paged = 1, $category = null) {
 
 // Add custom function to Twig
 add_filter('get_twig', 'add_custom_twig_functions');
+add_filter('get_twig', 'add_custom_twig_functions');
 function add_custom_twig_functions($twig) {
   $twig->addFunction(new \Twig\TwigFunction('get_project_categories', 'get_project_categories'));
   $twig->addFunction(new \Twig\TwigFunction('get_custom_posts', 'get_custom_posts'));
@@ -84,8 +85,12 @@ function add_custom_twig_functions($twig) {
   $twig->addFunction(new \Twig\TwigFunction('var_dump', function($var){
     var_dump($var);
   }));
+  $twig->addFunction(new \Twig\TwigFunction('asset', function($path) {
+    return get_template_directory_uri() . '/' . ltrim($path, '/');
+  }));
   return $twig;
 }
+
 
 function get_project_categories() {
   $args = array(
@@ -289,6 +294,10 @@ function add_to_context($context) {
 
   $context['nav_logo'] = get_field('navigation_settings_nav_logo', 'option');
   $context['footer_logo'] = get_field('footer_options_footer_logo', 'option');
+  $context['not_found_message'] = get_field('404_page_404_message', 'option');
+  $context['not_found_image'] = get_field('404_page_404_image', 'option');
+  $context['is_404'] = is_404();
+  $context['search_form'] = get_search_form(false);
   
   return $context;
 

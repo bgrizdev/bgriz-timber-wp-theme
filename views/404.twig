@@ -1,5 +1,19 @@
 {% extends "base.twig" %}
 
 {% block content %}
-	Sorry, we couldn't find what you're looking for.
+
+	<div class="px-4" id="">
+		<section class="wrapper bg-cover h-[100vh] flex justify-center align-center items-center flex-col bg-no-repeat" style="background-image: url('{{ fields.hero_banner_bg_image['url'] }}');">
+			<div class="flex justify-center align-center items-center">
+				<h1>{{ not_found_message }}</h1>
+				<img src={{ not_found_image['url'] }}>
+			</div>
+			<div class="mt-8">
+			Try a search? 
+				{{ search_form | raw }}
+			</div>
+		</section>
+	</div>
+
+
 {% endblock %}

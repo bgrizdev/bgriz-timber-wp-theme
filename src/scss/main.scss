@@ -745,31 +745,35 @@ button {
     background-color: $white;
 
     #filter-buttons {
-        @media (min-width: 768px) {
-            position: sticky;
-            top: 0px;
-            z-index: 9999;
-        }
-        background-color: $white;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 
-        .filter-button {
-            border: 2px solid black;
-            border-radius: 0.25rem;
-            transition: all 0.3s ease-in-out;
-
-            &:hover {
-                background-color: $dark;
+        .inside {
+            @media (min-width: 768px) {
+                position: sticky;
+                top: 50px;
+                z-index: 9999;
+            }
+            background-color: $white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    
+            .filter-button {
+                border: 2px solid black;
+                border-radius: 0.25rem;
+                transition: all 0.3s ease-in-out;
+    
+                &:hover {
+                    background-color: $dark;
+                    color: white;
+                    border: 2px solid $dark;
+                }
+            }
+    
+            .filter-button.active {
+                background-color: $dark-blue;
                 color: white;
-                border: 2px solid $dark;
+                border: 2px solid $dark-blue;
             }
         }
 
-        .filter-button.active {
-            background-color: $dark-blue;
-            color: white;
-            border: 2px solid $dark-blue;
-        }
     }
 
     .post-grid-item {
@@ -901,3 +905,17 @@ footer {
         width: auto !important;
     }
 }
+
+.searchform {
+    @apply flex mt-4;
+  }
+  
+  .searchform input[type="text"] {
+    @apply w-full md:w-[300px] px-4 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500;
+  }
+  
+  .searchform input[type="submit"] {
+    @apply px-4 py-2 bg-medium text-white rounded-r-md hover:cursor-pointer transition-colors;
+  }
+  
+  

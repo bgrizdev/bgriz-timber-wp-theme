@@ -1,8 +1,6 @@
 import Isotope from "isotope-layout";
 import imagesLoaded from "imagesloaded";
 
-console.log('hello world from post-display-block.js');
-
 jQuery(document).ready(function ($) {
     // Initialize Isotope
     const iso = new Isotope('#post-grid-container', {
@@ -68,5 +66,20 @@ jQuery(document).ready(function ($) {
                 $('#spinner').hide();
             }
         });
-    });   
+    });
+
+    $('#mobile-filter-select').on('change', function () {
+        const filterValue = $(this).val();
+
+        // Apply filter
+        const iso = Isotope.data('#post-grid-container'); // Reuse existing instance
+        if (iso) {
+            iso.arrange({ filter: filterValue });
+        }
+
+        // Optional: sync active state on desktop buttons if needed
+        $('.filter-button').removeClass('active');
+        $('.filter-button[data-filter="' + filterValue + '"]').addClass('active');
+    });
+
 });

@@ -14,14 +14,25 @@
 
 <h3 class="text-center">{{ fields.title  }}</h3>
 
-<div id="filter-buttons" class="mx-auto grid grid-cols-2 md:flex md:flex-row justify-center gap-2 md:space-x-4 mb-4 mt-4 rounded-lg">
-    <button class="filter-button active w-full md:w-auto" data-filter="*">Show All</button>
-    {% for category in get_project_categories() %}
-        <button class="filter-button w-full md:w-auto" data-filter=".{{ category.slug }}">{{ category.name }}</button>
-    {% endfor %}
-</div>
-
-<div class="flex flex-wrap max-w-screen-xl mx-auto">
+<div class="flex flex-col sm:flex-row mx-auto">
+    <div id="filter-buttons" class="mx-auto mb-4 mt-4">
+        <div class="inside flex flex-col rounded-lg">
+            <div id="mobile-filter-dropdown" class="sm:hidden mt-2">
+                <select id="mobile-filter-select" class="w-full p-2 border border-gray-300 rounded-md">
+                    <option value="*">Show All</option>
+                    {% for category in get_project_categories() %}
+                        <option value=".{{ category.slug }}">{{ category.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="hidden sm:flex flex-col">
+                <button class="filter-button active w-full md:w-auto" data-filter="*">Show All</button>
+                {% for category in get_project_categories() %}
+                    <button class="filter-button w-full md:w-auto" data-filter=".{{ category.slug }}">{{ category.name }}</button>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
     <div class="w-full p-4">
         {% set post_type = fields.post_type_selection %}
         {% set posts = get_custom_posts(post_type, rand) %}
