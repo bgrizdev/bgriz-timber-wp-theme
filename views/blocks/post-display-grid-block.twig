@@ -14,8 +14,8 @@
 
 <h3 class="text-center">{{ fields.title  }}</h3>
 
-<div class="flex flex-col sm:flex-row mx-auto">
-    <div id="filter-buttons" class="mx-auto mb-4 mt-4">
+<div class="grid grid-cols-1 sm:grid-cols-4 mx-auto">
+    <div id="filter-buttons" class="mx-auto col-span-1 mb-4 mt-4">
         <div class="inside flex flex-col rounded-lg">
             <div id="mobile-filter-dropdown" class="sm:hidden mt-2">
                 <select id="mobile-filter-select" class="w-full p-2 border border-gray-300 rounded-md">
@@ -33,11 +33,11 @@
             </div>
         </div>
     </div>
-    <div class="w-full p-4">
+    <div class="col-span-3 p-4">
         {% set post_type = fields.post_type_selection %}
         {% set posts = get_custom_posts(post_type, rand) %}
         {% if posts|length > 0 %}
-            <div id="post-grid-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            <div id="post-grid-container" class="flex justify-items-center sm:grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                 {% for post in posts %}
                     <div class="post-grid-item p-4 {% for category in post.categories %}{{ category.slug }} {% endfor %}">
                         <div class="post-grid-item-inner shadow-lg rounded-lg">

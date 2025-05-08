@@ -841,7 +841,7 @@ button {
     }
 
     .wp-block-list {
-        width: 900px;
+        max-width: 900px;
         margin: 0 auto;
         padding-left: 30px;
         list-style: disc;
