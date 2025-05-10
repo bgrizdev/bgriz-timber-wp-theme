@@ -294,8 +294,9 @@ function add_to_context($context) {
 
   $context['nav_logo'] = get_field('navigation_settings_nav_logo', 'option');
   $context['footer_logo'] = get_field('footer_options_footer_logo', 'option');
-  $context['not_found_message'] = get_field('404_page_404_message', 'option');
-  $context['not_found_image'] = get_field('404_page_404_image', 'option');
+  $context['not_found_message'] = get_field('not_found_page_options_message', 'option');
+  $context['not_found_image'] = get_field('not_found_page_options_image', 'option');
+  $context['ga_tracking_code'] = get_field('tracking_codes_google_analytics', 'option');
   $context['is_404'] = is_404();
   $context['search_form'] = get_search_form(false);
   
@@ -304,3 +305,11 @@ function add_to_context($context) {
 }
 add_filter('timber/context', 'add_to_context');
 
+// add custom schema to head on all post types - optional
+function add_page_schema_to_head() {
+  $page_schema = get_field('page_schema');
+  if ($page_schema) {
+    echo '<script type="application/ld+json">' . $page_schema . '</script>';
+  }
+}
+add_action('wp_head', 'add_page_schema_to_head');
