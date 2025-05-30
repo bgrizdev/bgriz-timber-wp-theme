@@ -24,7 +24,7 @@ function get_custom_posts($post_type, $paged = 1, $category = null) {
   error_log('post_type: ' . $post_type);
   error_log('category: ' . print_r($category, true));
 
-  $posts_per_page = 3;
+  $posts_per_page = 5;
   $args = array(
       'post_type' => $post_type,
       'posts_per_page' => $posts_per_page,
@@ -67,7 +67,8 @@ function get_custom_posts($post_type, $paged = 1, $category = null) {
           'post_excerpt' => get_the_excerpt($post),
           'thumbnail_url' => $thumbnail_url ? $thumbnail_url : '',
           'post_link' => get_permalink($post->ID),
-          'categories' => $category_data
+          'categories' => $category_data,
+          'job_title' => get_field('job_title', $post->ID)
       );
   }
 
